@@ -1,6 +1,6 @@
 [package]
 name = "cloudevents-sdk-actix-web"
-version = "0.3.1"
+version = "0.4.0"
 authors = ["Francesco Guardiani <francescoguard@gmail.com>"]
 license-file = "../LICENSE"
 edition = "2018"
@@ -13,15 +13,18 @@ categories = ["web-programming", "encoding", "web-programming::http-server"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cloudevents-sdk = { version = "0.3.0", path = ".." }
-actix-web = { version = "^3", default-features = false }
+cloudevents-sdk = { version = "0.4.0", path = ".." }
+actix-web = { version = "=4.0.0-beta.1", default-features = false } # we need v4 as we need tokio 1
 async-trait = "^0.1.33"
 lazy_static = "1.4.0"
-bytes = "^0.5"
+bytes = "1"
 futures = "^0.3"
 
+# pin transient dependencies for "beta"
+actix-service = "=2.0.0-beta.2"
+
 [dev-dependencies]
-actix-rt = "^1"
+actix-rt = "=2.0.0-beta.1"
 url = { version = "^2.1", features = ["serde"] }
 serde_json = "^1.0"
 chrono = { version = "^0.4", features = ["serde"] }
