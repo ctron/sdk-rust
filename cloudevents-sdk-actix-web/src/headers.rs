@@ -8,7 +8,7 @@ use std::str::FromStr;
 macro_rules! unwrap_optional_header {
     ($headers:expr, $name:expr) => {
         $headers
-            .get::<&'static HeaderName>(&$name)
+            .get($name.as_str())
             .map(|a| header_value_to_str!(a))
     };
 }

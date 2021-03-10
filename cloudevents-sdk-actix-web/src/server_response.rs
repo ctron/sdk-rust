@@ -23,26 +23,26 @@ impl HttpResponseSerializer {
 
 impl BinarySerializer<HttpResponse> for HttpResponseSerializer {
     fn set_spec_version(mut self, spec_version: SpecVersion) -> Result<Self> {
-        self.builder.set_header(
+        self.builder.insert_header((
             headers::SPEC_VERSION_HEADER.clone(),
             str_to_header_value!(spec_version.as_str())?,
-        );
+        ));
         Ok(self)
     }
 
     fn set_attribute(mut self, name: &str, value: MessageAttributeValue) -> Result<Self> {
-        self.builder.set_header(
+        self.builder.insert_header((
             headers::ATTRIBUTES_TO_HEADERS.get(name).unwrap().clone(),
             str_to_header_value!(value.to_string().as_str())?,
-        );
+        ));
         Ok(self)
     }
 
     fn set_extension(mut self, name: &str, value: MessageAttributeValue) -> Result<Self> {
-        self.builder.set_header(
+        self.builder.insert_header((
             attribute_name_to_header!(name)?,
             str_to_header_value!(value.to_string().as_str())?,
-        );
+        ));
         Ok(self)
     }
 
@@ -59,10 +59,10 @@ impl StructuredSerializer<HttpResponse> for HttpResponseSerializer {
     fn set_structured_event(mut self, bytes: Vec<u8>) -> Result<HttpResponse> {
         Ok(self
             .builder
-            .set_header(
+            .insert_header((
                 actix_web::http::header::CONTENT_TYPE,
                 headers::CLOUDEVENTS_JSON_HEADER.clone(),
-            )
+            ))
             .body(bytes))
     }
 }

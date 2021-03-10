@@ -1,5 +1,4 @@
 use super::headers;
-use actix_web::http::HeaderName;
 use actix_web::web::{Bytes, BytesMut};
 use actix_web::{web, HttpMessage, HttpRequest};
 use async_trait::async_trait;
@@ -89,7 +88,7 @@ impl<'a> MessageDeserializer for HttpRequestDeserializer<'a> {
         } else if self
             .req
             .headers()
-            .get::<&'static HeaderName>(&super::headers::SPEC_VERSION_HEADER)
+            .get(super::headers::SPEC_VERSION_HEADER.as_str())
             .is_some()
         {
             Encoding::BINARY
@@ -144,12 +143,10 @@ mod private {
 mod tests {
     use super::*;
     use actix_web::test;
-    use url::Url;
 
     use chrono::Utc;
     use cloudevents::{EventBuilder, EventBuilderV10};
     use serde_json::json;
-    use std::str::FromStr;
 
     #[actix_rt::test]
     async fn test_request() {
@@ -166,12 +163,12 @@ mod tests {
             .unwrap();
 
         let (req, payload) = test::TestRequest::post()
-            .header("ce-specversion", "1.0")
-            .header("ce-id", "0001")
-            .header("ce-type", "example.test")
-            .header("ce-source", "http://localhost/")
-            .header("ce-someint", "10")
-            .header("ce-time", time.to_rfc3339())
+            .append_header(("ce-specversion", "1.0"))
+            .append_header(("ce-id", "0001"))
+            .append_header(("ce-type", "example.test"))
+            .append_header(("ce-source", "http://localhost/"))
+            .append_header(("ce-someint", "10"))
+            .append_header(("ce-time", time.to_rfc3339()))
             .to_http_parts();
 
         let resp = req.to_event(web::Payload(payload)).await.unwrap();
@@ -196,13 +193,13 @@ mod tests {
             .unwrap();
 
         let (req, payload) = test::TestRequest::post()
-            .header("ce-specversion", "1.0")
-            .header("ce-id", "0001")
-            .header("ce-type", "example.test")
-            .header("ce-source", "http://localhost")
-            .header("ce-someint", "10")
-            .header("ce-time", time.to_rfc3339())
-            .header("content-type", "application/json")
+            .append_header(("ce-specversion", "1.0"))
+            .append_header(("ce-id", "0001"))
+            .append_header(("ce-type", "example.test"))
+            .append_header(("ce-source", "http://localhost"))
+            .append_header(("ce-someint", "10"))
+            .append_header(("ce-time", time.to_rfc3339()))
+            .append_header(("content-type", "application/json"))
             .set_json(&j)
             .to_http_parts();
 
