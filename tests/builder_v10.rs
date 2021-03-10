@@ -12,7 +12,7 @@ use url::Url;
 #[test]
 fn build_event() {
     let id = "aaa";
-    let source = Url::parse("http://localhost:8080").unwrap();
+    let source = "http://localhost:8080";
     let ty = "bbb";
     let subject = "francesco";
     let time: DateTime<Utc> = Utc::now();
