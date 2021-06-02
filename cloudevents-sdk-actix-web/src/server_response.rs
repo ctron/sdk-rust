@@ -1,6 +1,6 @@
 use super::headers;
 use actix_web::http::{HeaderName, HeaderValue};
-use actix_web::{HttpResponse, HttpResponseBuilder};
+use actix_web::{dev::HttpResponseBuilder, HttpResponse};
 use async_trait::async_trait;
 use cloudevents::event::SpecVersion;
 use cloudevents::message::{
@@ -100,7 +100,7 @@ impl HttpResponseBuilderExt for HttpResponseBuilder {
 // Sealing the HttpResponseBuilderExt
 mod private {
     pub trait Sealed {}
-    impl Sealed for actix_web::HttpResponseBuilder {}
+    impl Sealed for actix_web::dev::HttpResponseBuilder {}
 }
 
 #[cfg(test)]
@@ -108,7 +108,7 @@ mod tests {
     use super::*;
 
     use actix_web::http::StatusCode;
-    use actix_web::{test, HttpResponseBuilder};
+    use actix_web::{dev::HttpResponseBuilder, test};
     use cloudevents::{EventBuilder, EventBuilderV10};
     use futures::TryStreamExt;
     use serde_json::json;

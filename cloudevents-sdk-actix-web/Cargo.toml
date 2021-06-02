@@ -22,6 +22,7 @@ futures = "^0.3"
 
 # pin transient dependencies for "beta"
 actix-http = "=3.0.0-beta.5" # FIXME: temporary intermediate
+actix-service = "=2.0.0-beta.5"
 
 [dev-dependencies]
 actix-rt = "2.1"
